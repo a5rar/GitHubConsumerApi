@@ -21,6 +21,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -39,13 +42,15 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.consumer.github.Application;
 
-import net.sf.ehcache.CacheManager;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest
 public class RepoControllerTest {
+	
+
 	
 	@Autowired
 	WebApplicationContext context;
@@ -56,10 +61,7 @@ public class RepoControllerTest {
 	private MockMvc mvc;
 	
 	
-	@After
-	public void destroy(){
-		CacheManager.getInstance().shutdown();
-	}
+	
 	
 	@Before
 	public void setUp() {
