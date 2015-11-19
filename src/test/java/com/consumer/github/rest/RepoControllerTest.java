@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.net.URI;
 
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,11 +39,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.consumer.github.Application;
 
+import net.sf.ehcache.CacheManager;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest
-public class GetUserRepoTest {
+public class RepoControllerTest {
 	
 	@Autowired
 	WebApplicationContext context;
@@ -52,11 +55,19 @@ public class GetUserRepoTest {
 	
 	private MockMvc mvc;
 	
+	
+	@After
+	public void destroy(){
+		CacheManager.getInstance().shutdown();
+	}
+	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		mvc = MockMvcBuilders.webAppContextSetup(context)
 				.addFilter(springSecurityFilterChain).build();
+		
+		
 	}
 	
 	@Test
